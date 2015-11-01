@@ -110,7 +110,7 @@ void CudaPSO::Init() {
 int findMinIndex(float *best_Fits, float &best_fit){
     float *host_best_fits = new float[n];
     cudaMemcpy(host_best_fits, best_Fits, sizeof(float)*n, cudaMemcpyDeviceToHost);
-    float minVal = FLOAT_MAX;
+    float minVal = 9.0;
     int minIndex = 0;
     for (int i=0; i<n; i++) {
         if (host_best_fits[i] < minVal) {
