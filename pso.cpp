@@ -69,7 +69,7 @@ void PSO::Init()
     }
 }
 
-int PSO::Solve(int m, float eps) 
+float PSO::Solve(int m, float eps) 
 {
     int k;
     for (k=0; k<m; k++) {
@@ -99,6 +99,7 @@ int PSO::Solve(int m, float eps)
        }
        //rme(k) = gBest.fit;
     }
-    return k;
+    iters = k;
+    return 0.0;
 }
 

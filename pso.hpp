@@ -17,7 +17,7 @@ private:
  
 public:
     particle gBest;
+    int iters;
     PSO(int n);
-    int Solve(int m, float eps);
-
+    float Solve(int m, float eps);
 };

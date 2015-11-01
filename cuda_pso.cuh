@@ -16,6 +16,7 @@ private:
     void Init();
 public:  
     float3 gBest;    //x, y, fit
+    int iters;
     CudaPSO(int n);
     float Solve(int m, float eps);
 };

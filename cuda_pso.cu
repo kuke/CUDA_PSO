@@ -135,21 +135,19 @@ float CudaPSO::Solve(int m, float eps){
     cudaEventCreate(&stop);
     cudaEventRecord( start, 0 );
 
-    float3 gBest;
-    int best_index = 1;
-    for (int k=0; k<m; k++) {
+    int best_index = 1; 
+    int k;
+    for (k=0; k<m; k++) {
         Solve_kernel<<<nBlocks, nThreadsPerBlock>>>(par_dPos, par_dVel, par_dFit, best_Fits,  best_index-1, curand_state, n);
-        cudaDeviceSynchronize();
         cublasIsamin(handle, n, best_Fits, 1, &best_index);
-        float minVal; 
-        int minIndex = findMinIndex(best_Fits, n,  minVal);
-//        cublasGetVector(1, sizeof(float), best_Fits, best_index, &best_fit, 0);
+        //float minVal; 
+        //int minIndex = findMinIndex(best_Fits, n,  minVal);
         cudaMemcpy(&gBest, par_dFit+best_index - 1, 1*sizeof(float3), cudaMemcpyDeviceToHost);
-        cout<<best_index<<"\t"<<gBest.z<<"\t"<<minIndex<<"\t"<<minVal<<endl;
+        //cout<<best_index-1<<"\t"<<gBest.z<<"\t"<<minIndex<<"\t"<<minVal<<endl;
         if (gBest.z < eps) break;   
     }
+    iters = k;
     cout<<endl;
-    cout<<gBest.x<<"\t"<<gBest.y<<endl;
    
     cudaEventRecord( stop, 0 );
     cudaEventSynchronize( stop );
