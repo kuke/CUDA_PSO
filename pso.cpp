@@ -83,6 +83,7 @@ int PSO::Solve(int m, float eps)
                    gBest.fit = par[i].bestfit;
                    gBest.x = par[i].x;
                    gBest.y = par[i].y;
+                   cout<<i<<"\t"<<gBest.fit<<"\t";
                 }
            }
 
