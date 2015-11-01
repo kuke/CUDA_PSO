@@ -67,6 +67,7 @@ __global__ static void Solve_kernel(float2 *par_dPos, float2 *par_dVel, float3 *
             gBest[0] = par_dFit[best_index];
         }
         __syncthreads();
+        float3 best_fit = gBest[0];
         curandState localState = state[index];
         float fit = compute_fit(Pos.x, Pos.y);
         if (fit < Fit.z) {
@@ -74,10 +75,13 @@ __global__ static void Solve_kernel(float2 *par_dPos, float2 *par_dVel, float3 *
             Fit.x = Pos.x;
             Fit.y = Pos.y;
         }
+        if (Fit.z < best_fit.z) {
+            best_fit = Fit;
+        }
         int c1 = 1;
         int c2 = 1;
-        Vel.x += c1*curand_uniform(&localState)*(gBest[0].x - Pos.x)+c2*curand_uniform(&localState)*(Fit.x - Pos.x);
-        Vel.y += c1*curand_uniform(&localState)*(gBest[0].y - Pos.y)+c2*curand_uniform(&localState)*(Fit.y - Pos.y);
+        Vel.x += c1*curand_uniform(&localState)*(best_fit.x - Pos.x)+c2*curand_uniform(&localState)*(Fit.x - Pos.x);
+        Vel.y += c1*curand_uniform(&localState)*(best_fit.y - Pos.y)+c2*curand_uniform(&localState)*(Fit.y - Pos.y);
         Pos.x += Vel.x;
         Pos.y += Vel.y;
         best_Fits[index] = Fit.z;
