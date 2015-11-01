@@ -111,7 +111,7 @@ void CudaPSO::Init() {
 }
 
 //for validation
-int findMinIndex(float *best_Fits, float &best_fit){
+int findMinIndex(float *best_Fits, int n, float &best_fit){
     float *host_best_fits = new float[n];
     cudaMemcpy(host_best_fits, best_Fits, sizeof(float)*n, cudaMemcpyDeviceToHost);
     float minVal = 9.0;
@@ -136,15 +136,15 @@ float CudaPSO::Solve(int m, float eps){
     cudaEventRecord( start, 0 );
 
     float3 gBest;
-    int best_index = 0;
+    int best_index = 1;
     for (int k=0; k<m; k++) {
-        Solve_kernel<<<nBlocks, nThreadsPerBlock>>>(par_dPos, par_dVel, par_dFit, best_Fits,  best_index, curand_state, n);
+        Solve_kernel<<<nBlocks, nThreadsPerBlock>>>(par_dPos, par_dVel, par_dFit, best_Fits,  best_index-1, curand_state, n);
         cudaDeviceSynchronize();
         cublasIsamin(handle, n, best_Fits, 1, &best_index);
         float minVal; 
-        int minIndex = findMinIndex(best_Fits, minVal);
+        int minIndex = findMinIndex(best_Fits, n,  minVal);
 //        cublasGetVector(1, sizeof(float), best_Fits, best_index, &best_fit, 0);
-        cudaMemcpy(&gBest, par_dFit+best_index, 1*sizeof(float3), cudaMemcpyDeviceToHost);
+        cudaMemcpy(&gBest, par_dFit+best_index - 1, 1*sizeof(float3), cudaMemcpyDeviceToHost);
         cout<<best_index<<"\t"<<gBest.z<<"\t"<<minIndex<<"\t"<<minVal<<endl;
         if (gBest.z < eps) break;   
     }
