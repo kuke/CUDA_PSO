@@ -3,7 +3,6 @@
 #include <curand_kernel.h>
 #include "cuda_pso.cuh"
 #define PI 3.1415926535898
-#define NUM_THREADS 32
 
 using namespace std;
 
@@ -117,7 +116,7 @@ CudaPSO::~CudaPSO(){
 }
 
 void CudaPSO::Init() {
-    int nThreadsPerBlock = NUM_THREADS;
+    int nThreadsPerBlock = 32;
     int nBlocks = (n+nThreadsPerBlock-1)/nThreadsPerBlock;
     curand_setup<<<nBlocks, nThreadsPerBlock>>>(curand_state,time(NULL), n);
     Init_kernel<<<nBlocks, nThreadsPerBlock>>>(par_dPos, par_dVel, par_dFit,curand_state, n);
@@ -139,7 +138,7 @@ int findMinIndex(float *best_Fits, int n, float &best_fit){
     return minIndex;
 }
 
-float CudaPSO::Solve(int m, float eps){
+float CudaPSO::Solve(int m, int numThreads, float eps){
     cudaEvent_t start, stop;
     float time;
     cudaEventCreate(&start);
@@ -147,7 +146,7 @@ float CudaPSO::Solve(int m, float eps){
     cudaEventRecord( start, 0 );
    
     RME = new float[m];
-    int nThreadsPerBlock = NUM_THREADS;
+    int nThreadsPerBlock = numThreads;
     int nBlocks = (n+nThreadsPerBlock-1)/nThreadsPerBlock;
     int best_index = 1; 
     for (iters=0; iters<m; iters++) {

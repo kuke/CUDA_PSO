@@ -8,14 +8,29 @@ int main()
 {
    int numParticles = 1024;
    int maxIters = 50;
+   int numThreads = 32;
    float eps = 10^-6;
+   
+   if (checkCmdLineFlag(argc, (const char **) argv, "n"))
+   {
+       numParticles = getCmdLineArgumentFloat(argc, (const char **)argv, "n");
+   }
+   if (checkCmdLineFlag(argc, (const char **) argv, "m"))
+   {    
+       maxIters = getCmdLineArgumentFloat(argc, (const char **)argv, "m");
+   }
+   if (checkCmdLineFlag(argc, (const char **) argv, "threads"))
+   {
+       numThreads = getCmdLineArgumentFloat(argc, (const char **)argv, "threads");
+   }
+   std::cout<<"PSO Algorithm: "<<" n= "<<numPartilces<<", m= "<<maxIters<<", threads= "<<numThreads<<std::endl;
    PSO pso(numParticles);
    float cpu_time = pso.Solve(maxIters, eps);
    std::cout<<"CPU result: "<<std::endl;
    std::cout<<"a: "<<pso.gBest.x<<" b: "<<pso.gBest.y<<" iters: "<<pso.iters<<" time: "<<cpu_time<<"ms"<<std::endl;
    
    CudaPSO cuda_pso(numParticles);
-   float cuda_time = cuda_pso.Solve(maxIters, eps);
+   float cuda_time = cuda_pso.Solve(maxIters, numThreads, eps);
    std::cout<<"GPU result: "<<std::endl;
    std::cout<<" a: "<<cuda_pso.gBest.x<<" b: "<<cuda_pso.gBest.y<<" iters: "<<cuda_pso.iters<<" time: "<<cuda_time<<"ms"<<std::endl;
    

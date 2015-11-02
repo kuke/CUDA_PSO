@@ -21,7 +21,7 @@ public:
     int iters;
     CudaPSO(int n);
     ~CudaPSO();
-    float Solve(int m, float eps);
+    float Solve(int m, int threads, float eps);
 };
 
 #endif
