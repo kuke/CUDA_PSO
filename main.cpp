@@ -20,8 +20,9 @@ int main()
    std::cout<<" a: "<<cuda_pso.gBest.x<<" b: "<<cuda_pso.gBest.y<<" iters: "<<cuda_pso.iters<<" time: "<<cuda_time<<"ms"<<std::endl;
    
    std::cout<<"GPU perf./CPU perf. = "<<time/cuda_time<<std::endl;
-   
-   std::cout<<std::string(system("time"))<<std::endl;
+
+   time_t timer;   
+   std::cout<<std::string(asctime(localtime(&timer)))<<std::endl;
    std::cout<<"CPU RME:"<<std::endl;
    for (int i=0; i<pso.iters; i++){
        std::cout<<pso.RME[i]<<"\t"<<std::endl;
