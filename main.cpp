@@ -24,7 +24,7 @@ int main(int argc, char **argv)
    {
        numThreads = getCmdLineArgumentFloat(argc, (const char **)argv, "threads");
    }
-   std::cout<<"PSO Algorithm: "<<" n= "<<numPartilces<<", m= "<<maxIters<<", threads= "<<numThreads<<std::endl;
+   std::cout<<"PSO Algorithm: "<<" n= "<<numParticles<<", m= "<<maxIters<<", threads= "<<numThreads<<std::endl;
    PSO pso(numParticles);
    float cpu_time = pso.Solve(maxIters, eps);
    std::cout<<"CPU result: "<<std::endl;
