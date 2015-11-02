@@ -41,6 +41,14 @@ double compute_fit(double x, double y)
    return re;
 }
 
+inline double cpu_time()
+{
+  struct timespec ts;
+  clock_gettime(CLOCK_MONOTONIC,&ts);
+  return (ts.tv_sec*1000 + ts.tv_nsec/(1000*1000.0));
+}
+
+
 PSO::PSO(int n) 
 {
     this->n = n;
@@ -72,6 +80,7 @@ void PSO::Init()
 float PSO::Solve(int m, float eps) 
 {
     int k;
+    double start = cpu_time();
     for (k=0; k<m; k++) {
         for (int i=0; i<n; i++) {
             par[i].fit = compute_fit(par[i].x, par[i].y);
@@ -83,7 +92,6 @@ float PSO::Solve(int m, float eps)
                    gBest.fit = par[i].bestfit;
                    gBest.x = par[i].x;
                    gBest.y = par[i].y;
-                   cout<<i<<"\t"<<gBest.fit<<"\t";
                 }
            }
 
@@ -100,6 +108,7 @@ float PSO::Solve(int m, float eps)
        //rme(k) = gBest.fit;
     }
     iters = k;
-    return 0.0;
+    float time = cpu_time()-start;
+    return time;
 }
 
