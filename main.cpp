@@ -29,7 +29,7 @@ int main()
    }
    std::cout<<"GPU RME:"<<std::endl;
    for (int i=0; i<cuda_pso.iters; i++){
-       std::cout<<cuda_pso.RME[i];
+       std::cout<<cuda_pso.RME[i]<<"\t";
    }
    return 0;
 }
