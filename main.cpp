@@ -19,7 +19,7 @@ int main()
    std::cout<<"GPU result: "<<std::endl;
    std::cout<<" a: "<<cuda_pso.gBest.x<<" b: "<<cuda_pso.gBest.y<<" iters: "<<cuda_pso.iters<<" time: "<<cuda_time<<"ms"<<std::endl;
    
-   std::cout<<"GPU perf./CPU perf. = "<<cpu_time/cuda_time<<std::endl;
+   std::cout<<std::endl<<"GPU perf./CPU perf. = "<<cpu_time/cuda_time<<std::endl;
 
    time_t now = time(NULL);
    struct tm timeinfo = *localtime(&now);
@@ -32,7 +32,8 @@ int main()
        fout<<pso.RME[i]<<"\t\t"<<cuda_pso.RME[i]<<std::endl;
    }
    fout.close();
-   std::cout<<filename<<std::endl;
+   std::cout<<std::endl<<"RMEs have been written into ./"<<filename<<std::endl;
+   /*
    std::cout<<std::endl;
    std::cout<<"CPU RME:"<<std::endl;
    for (int i=0; i<pso.iters; i++){
@@ -43,5 +44,6 @@ int main()
    for (int i=0; i<cuda_pso.iters; i++){
        std::cout<<cuda_pso.RME[i]<<"\t";
    }
+   */
    return 0;
 }
