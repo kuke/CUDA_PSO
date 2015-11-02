@@ -27,7 +27,7 @@ private:
  
 public:
     particle gBest;
-    float *rme
+    float *RME;
     int iters;
     PSO(int n);
     ~PSO();
