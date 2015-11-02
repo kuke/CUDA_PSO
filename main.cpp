@@ -19,7 +19,7 @@ int main(int argc, char **argv)
    int maxIters = 50;
    int numThreads = 32;
    float eps = 10^-6;
-   if (checkCmdLineFlag(argc,(const char **)argv,"h"))
+   if (checkCmdLineFlag(argc,(const char **)argv,"help"))
    {
        helper();
        exit(0);
