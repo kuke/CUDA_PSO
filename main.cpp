@@ -4,7 +4,7 @@
 #include "cuda_pso.cuh"
 #include <string>
 
-int main()
+int main(int argc, char **argv)
 {
    int numParticles = 1024;
    int maxIters = 50;
