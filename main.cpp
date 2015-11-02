@@ -22,9 +22,9 @@ int main()
    std::cout<<"GPU perf./CPU perf. = "<<cpu_time/cuda_time<<std::endl;
 
    time_t now = time(NULL);
-   struct tm *timeinfo = localtime(&now);
+   struct tm timeinfo = *localtime(&now);
    char name[50];
-   strftime(name, sizeof(name),"%Y%m%d%H%M%S", timeinfo);   
+   strftime(name, sizeof(name),"%Y%m%d%H%M%S", &timeinfo);   
    std::string filename = std::string(name)+std::string(".log");
    std::ofstream fout(filename.c_str(), std::ios::app);
    fout<<"CPU RME\t\t"<<"GPU RME"<<std::endl;
