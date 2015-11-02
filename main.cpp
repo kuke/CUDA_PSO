@@ -22,14 +22,14 @@ int main()
    std::cout<<"GPU perf./CPU perf. = "<<time/cuda_time<<std::endl;
 
    time_t timer;   
-   std::string filename = std::string(asctime(localtime(&timer)))+".log";
+   std::string filename = std::string(asctime(localtime(&timer))).data()+std::string(".log");
    std::ofstream fout(filename.c_str(), std::ios::app);
    fout<<"CPU RME\t\t"<<"GPU RME"<<std::endl;
    for (int i=0; i<std::min(pso.iters, cuda_pso.iters); i++) {
        fout<<pso.RME[i]<<"\t\t"<<cuda_pso.RME[i]<<std::endl;
    }
    fout.close();
-   std::cout<<filename<<std:endl;
+   std::cout<<filename<<std::endl;
    std::cout<<std::endl;
    std::cout<<"CPU RME:"<<std::endl;
    for (int i=0; i<pso.iters; i++){
