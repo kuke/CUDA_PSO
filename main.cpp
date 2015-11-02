@@ -25,11 +25,11 @@ int main()
    std::cout<<std::string(asctime(localtime(&timer)))<<std::endl;
    std::cout<<"CPU RME:"<<std::endl;
    for (int i=0; i<pso.iters; i++){
-       std::cout<<pso.RME[i]<<"\t"<<std::endl;
+       std::cout<<pso.RME[i]<<"\t";
    }
    std::cout<<"GPU RME:"<<std::endl;
    for (int i=0; i<cuda_pso.iters; i++){
-       std::cout<<cuda_pso.RME[i]<<std::endl;
+       std::cout<<cuda_pso.RME[i];
    }
    return 0;
 }
