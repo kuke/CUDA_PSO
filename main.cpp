@@ -25,7 +25,7 @@ int main()
    std::string filename = std::string(asctime(localtime(&timer)))+".log";
    std::ofstream fout(filename.c_str(), std::ios::app);
    fout<<"CPU RME\t\t"<<"GPU RME"<<std::endl;
-   for (int i=0; i<std::min(pso.iters, cuda_pso.iters), i++) {
+   for (int i=0; i<std::min(pso.iters, cuda_pso.iters); i++) {
        fout<<pso.RME[i]<<"\t\t"<<cuda_pso.RME[i]<<std::endl;
    }
    std::endl;
