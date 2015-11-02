@@ -3,7 +3,7 @@
 #include "pso.hpp"
 #include "cuda_pso.cuh"
 #include <string>
-#include <helper_cuda.h>
+#include <helper_string.h>
 
 int main(int argc, char **argv)
 {
