@@ -28,7 +28,7 @@ int main()
    for (int i=0; i<std::min(pso.iters, cuda_pso.iters); i++) {
        fout<<pso.RME[i]<<"\t\t"<<cuda_pso.RME[i]<<std::endl;
    }
-   std::endl;
+   std::cout<<std::endl;
    std::cout<<"CPU RME:"<<std::endl;
    for (int i=0; i<pso.iters; i++){
        std::cout<<pso.RME[i]<<"\t";
