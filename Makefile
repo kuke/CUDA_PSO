@@ -1,8 +1,9 @@
 TARGET = pso.bin
 OBJS = main.o pso.o 
 CUOBJS = cuda_pso.o
-INCS := -I/usr/local/cuda-7.5/include 
-LIBS := -L/usr/local/cuda-7.5/lib64 -lcuda  -lcudart -lcurand
+CUDA_DIR := /usr/loca/cuda-7.5
+INCS := -I$(CUDA_DIR)/include -I$(CUDA_DIR)/samples/common/inc
+LIBS := -L$(CUDA_DIR)/lib64 -lcuda  -lcudart -lcurand
 
 $(TARGET): $(OBJS) $(CUOBJS)
 	g++ -o $@ $(OBJS) $(CUOBJS) $(LIBS) 
