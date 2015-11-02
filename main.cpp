@@ -10,16 +10,16 @@ int main()
    int maxIters = 50;
    float eps = 10^-6;
    PSO pso(numParticles);
-   float time = pso.Solve(maxIters, eps);
+   float cpu_time = pso.Solve(maxIters, eps);
    std::cout<<"CPU result: "<<std::endl;
-   std::cout<<"a: "<<pso.gBest.x<<" b: "<<pso.gBest.y<<" iters: "<<pso.iters<<" time: "<<time<<"ms"<<std::endl;
+   std::cout<<"a: "<<pso.gBest.x<<" b: "<<pso.gBest.y<<" iters: "<<pso.iters<<" time: "<<cpu_time<<"ms"<<std::endl;
    
    CudaPSO cuda_pso(numParticles);
    float cuda_time = cuda_pso.Solve(maxIters, eps);
    std::cout<<"GPU result: "<<std::endl;
    std::cout<<" a: "<<cuda_pso.gBest.x<<" b: "<<cuda_pso.gBest.y<<" iters: "<<cuda_pso.iters<<" time: "<<cuda_time<<"ms"<<std::endl;
    
-   std::cout<<"GPU perf./CPU perf. = "<<time/cuda_time<<std::endl;
+   std::cout<<"GPU perf./CPU perf. = "<<cpu_time/cuda_time<<std::endl;
 
    time_t now = time(NULL);
    struct tm *timeinfo = localtime(&now);
