@@ -2,7 +2,8 @@
 #include <cuda_runtime.h>
 #include <curand_kernel.h>
 #include "cuda_pso.cuh"
-#define PI 3.14159265898
+#define PI 3.1415926535898
+#define NUM_THREADS 32
 
 using namespace std;
 
@@ -31,10 +32,10 @@ __device__ float compute_fit(float x, float y)
     return ret;
 }
 
-__global__ void curand_setup(curandState *state, int n){
+__global__ void curand_setup(curandState *state,long int seed, int n){
     int index = threadIdx.x + blockIdx.x*blockDim.x;
     if (index < n)
-        curand_init(1234, index, 0, &state[index]);
+        curand_init(seed, index, 0, &state[index]);
 }
 
 
@@ -51,8 +52,7 @@ __global__ static void Init_kernel(float2 *par_dPos, float2 *par_dVel, float3 *p
       par_dPos[index] = Pos;
       par_dVel[index] = Vel;
       par_dFit[index] = Fit;
-  }
-    
+  }    
 }
 
 __global__ static void Solve_kernel(float2 *par_dPos, float2 *par_dVel, float3 *par_dFit,  float *best_Fits, int best_index, curandState *state, int n)
@@ -100,17 +100,30 @@ CudaPSO::CudaPSO(int n){
     cudaMalloc((void **)&par_dFit, sizeof(float3)*n);
     cudaMalloc((void **)&best_Fits, sizeof(float)*n);
     cudaMalloc((void**)&curand_state, sizeof(curandState)*n);
-    Init();    
+    Init(); 
+    RME = NULL;   
+}
+
+~CudaPSO::CudaPSO(){
+    cublasDestroy(handle);
+    cudaFree(par_dPos);
+    cudaFree(par_dVel);
+    cudaFree(par_dFit);
+    cudaFree(best_Fits);
+    cudaFree(curand_state);
+    if (RME != NULL) {
+        delete []RME;
+    }
 }
 
 void CudaPSO::Init() {
-    int nThreadsPerBlock = 32;
+    int nThreadsPerBlock = NUM_THREADS;
     int nBlocks = (n+nThreadsPerBlock-1)/nThreadsPerBlock;
-    curand_setup<<<nBlocks, nThreadsPerBlock>>>(curand_state, n);
+    curand_setup<<<nBlocks, nThreadsPerBlock>>>(curand_state,time(NULL), n);
     Init_kernel<<<nBlocks, nThreadsPerBlock>>>(par_dPos, par_dVel, par_dFit,curand_state, n);
 }
 
-//for validation
+//for minimun search validation
 int findMinIndex(float *best_Fits, int n, float &best_fit){
     float *host_best_fits = new float[n];
     cudaMemcpy(host_best_fits, best_Fits, sizeof(float)*n, cudaMemcpyDeviceToHost);
@@ -127,26 +140,26 @@ int findMinIndex(float *best_Fits, int n, float &best_fit){
 }
 
 float CudaPSO::Solve(int m, float eps){
-    int nThreadsPerBlock = 32;
-    int nBlocks = (n+nThreadsPerBlock-1)/nThreadsPerBlock;
     cudaEvent_t start, stop;
     float time;
     cudaEventCreate(&start);
     cudaEventCreate(&stop);
     cudaEventRecord( start, 0 );
-
+   
+    RME = new float[m];
+    int nThreadsPerBlock = NUM_THREADS;
+    int nBlocks = (n+nThreadsPerBlock-1)/nThreadsPerBlock;
     int best_index = 1; 
-    int k;
-    for (k=0; k<m; k++) {
+    for (iters=0; iters<m; iters++) {
         Solve_kernel<<<nBlocks, nThreadsPerBlock>>>(par_dPos, par_dVel, par_dFit, best_Fits,  best_index-1, curand_state, n);
         cublasIsamin(handle, n, best_Fits, 1, &best_index);
         //float minVal; 
         //int minIndex = findMinIndex(best_Fits, n,  minVal);
         cudaMemcpy(&gBest, par_dFit+best_index - 1, 1*sizeof(float3), cudaMemcpyDeviceToHost);
         //cout<<best_index-1<<"\t"<<gBest.z<<"\t"<<minIndex<<"\t"<<minVal<<endl;
+        RME[iters] = gBest.z;
         if (gBest.z < eps) break;   
     }
-    iters = k;
     cout<<endl;
    
     cudaEventRecord( stop, 0 );

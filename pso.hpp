@@ -1,3 +1,6 @@
+#ifndef _PSO_HPP_
+#define _PSO_HPP_
+
 struct particle {
     float x;
     float y;
@@ -24,7 +27,11 @@ private:
  
 public:
     particle gBest;
+    float *rme
     int iters;
     PSO(int n);
+    ~PSO();
     float Solve(int m, float eps);
 };
+
+#endif

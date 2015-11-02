@@ -14,10 +14,13 @@ private:
     cublasHandle_t handle;
     curandState *curand_state;
     void Init();
+
 public:  
     float3 gBest;    //x, y, fit
+    float *RME;
     int iters;
     CudaPSO(int n);
+    ~CudaPSO();
     float Solve(int m, float eps);
 };
 

@@ -47,6 +47,12 @@ PSO::PSO(int n)
     par = new particle[n];
     Init();
     gBest = par[0];
+    RME = NULL;
+}
+
+~PSO::PSO(){
+    if (RME != NULL) delete []RME;
+    delete []par;
 }
 
 inline float uniform_rand()
@@ -71,9 +77,9 @@ void PSO::Init()
 
 float PSO::Solve(int m, float eps) 
 {
-    int k;
     double start = cpu_time();
-    for (k=0; k<m; k++) {
+    RME = new float[m];
+    for (iters=0; iters<m; iters++) {
         for (int i=0; i<n; i++) {
             par[i].fit = compute_fit(par[i].x, par[i].y);
             if (par[i].fit < par[i].bestfit) {
@@ -94,12 +100,11 @@ float PSO::Solve(int m, float eps)
           par[i].x = par[i].x+par[i].vx;
           par[i].y = par[i].y+par[i].vy;
        }
+       RME[iters] = gBest.fit;
        if (gBest.fit < eps) {
            break;
        }
-       //rme(k) = gBest.fit;
     }
-    iters = k;
     float time = cpu_time()-start;
     return time;
 }
