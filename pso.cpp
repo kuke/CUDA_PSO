@@ -10,10 +10,10 @@ double compute_fit(double x, double y)
 {
    double re = 0;
    double  data[9] = {
-   0.004450342097284,   0.017440060625698,   0.025142479360125,
-   0.018345616768773,   0.071893050392351,   0.103644681886180,
-   0.027821257493749,   0.109026319048659,   0.157177892624538
-    };
+       0.004450342097284,   0.017440060625698,   0.025142479360125,
+       0.018345616768773,   0.071893050392351,   0.103644681886180,
+       0.027821257493749,   0.109026319048659,   0.157177892624538
+   };
 
    if (x<-1 || x>1 || y<-1 || y>1) {
        re = 9;
@@ -92,7 +92,6 @@ float PSO::Solve(int m, float eps)
                    gBest.y = par[i].y;
                 }
            }
-
           int c1 = 1;
           int c2 = 1;
           par[i].vx = par[i].vx + c1*uniform_rand()*(gBest.x - par[i].x)+c2*uniform_rand()*(par[i].bestx-par[i].x);
@@ -100,6 +99,7 @@ float PSO::Solve(int m, float eps)
           par[i].x = par[i].x+par[i].vx;
           par[i].y = par[i].y+par[i].vy;
        }
+
        RME[iters] = gBest.fit;
        if (gBest.fit < eps) {
            break;

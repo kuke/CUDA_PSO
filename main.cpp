@@ -19,6 +19,7 @@ int main(int argc, char **argv)
    int maxIters = 50;
    int numThreads = 32;
    float eps = 10^-6;
+
    if (checkCmdLineFlag(argc,(const char **)argv,"help"))
    {
        helper();
@@ -36,7 +37,9 @@ int main(int argc, char **argv)
    {
        numThreads = getCmdLineArgumentFloat(argc, (const char **)argv, "threads");
    }
+
    std::cout<<"PSO Algorithm: "<<" n= "<<numParticles<<", m= "<<maxIters<<", threads= "<<numThreads<<std::endl;
+
    PSO pso(numParticles);
    float cpu_time = pso.Solve(maxIters, eps);
    std::cout<<"CPU result: "<<std::endl;
@@ -61,6 +64,7 @@ int main(int argc, char **argv)
    }
    fout.close();
    std::cout<<std::endl<<"RMEs have been written into ./"<<filename<<std::endl;
+   //uncomment if want to output RMEs to terminal
    /*
    std::cout<<std::endl;
    std::cout<<"CPU RME:"<<std::endl;

@@ -33,8 +33,9 @@ __device__ float compute_fit(float x, float y)
 
 __global__ void curand_setup(curandState *state,long int seed, int n){
     int index = threadIdx.x + blockIdx.x*blockDim.x;
-    if (index < n)
+    if (index < n){
         curand_init(seed, index, 0, &state[index]);
+    }
 }
 
 
@@ -143,7 +144,7 @@ float CudaPSO::Solve(int m, int numThreads, float eps){
     float time;
     cudaEventCreate(&start);
     cudaEventCreate(&stop);
-    cudaEventRecord( start, 0 );
+    cudaEventRecord(start, 0);
    
     RME = new float[m];
     int nThreadsPerBlock = numThreads;
@@ -161,10 +162,10 @@ float CudaPSO::Solve(int m, int numThreads, float eps){
     }
     cout<<endl;
    
-    cudaEventRecord( stop, 0 );
-    cudaEventSynchronize( stop );
-    cudaEventElapsedTime( &time, start, stop );
-    cudaEventDestroy( start );
-    cudaEventDestroy( stop );
+    cudaEventRecord(stop, 0);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&time, start, stop);
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
     return time;    
 }
