@@ -5,13 +5,25 @@
 #include <string>
 #include <helper_string.h>
 
+void helper()
+{
+    std::cout<<"Usage: pso.bin -n=<uint> -m=<uint> -threads=<uint>"<<std::endl;
+    std::cout<<"      -n, optional, num of particles, 1024 default;"<<std::endl;
+    std::cout<<"      -m, optional, max iterations, 50 default;"<<std::endl;
+    std::cout<<"-threads, optional, num of threads per block, 32 default."<<std::endl;
+}
+
 int main(int argc, char **argv)
 {
    int numParticles = 1024;
    int maxIters = 50;
    int numThreads = 32;
    float eps = 10^-6;
-   
+   if (checkCmdLineFlag(argc,(const char **)argv,"h") || checkCmdLineFlag(argc,(const char **)argv,"help"))
+   {
+       helper();
+       exit(0);
+   } 
    if (checkCmdLineFlag(argc, (const char **) argv, "n"))
    {
        numParticles = getCmdLineArgumentFloat(argc, (const char **)argv, "n");
