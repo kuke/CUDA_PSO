@@ -104,7 +104,7 @@ CudaPSO::CudaPSO(int n){
     RME = NULL;   
 }
 
-~CudaPSO::CudaPSO(){
+CudaPSO::~CudaPSO(){
     cublasDestroy(handle);
     cudaFree(par_dPos);
     cudaFree(par_dVel);

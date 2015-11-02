@@ -50,7 +50,7 @@ PSO::PSO(int n)
     RME = NULL;
 }
 
-~PSO::PSO(){
+PSO::~PSO(){
     if (RME != NULL) delete []RME;
     delete []par;
 }
