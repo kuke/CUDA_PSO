@@ -21,8 +21,7 @@ int main()
    
    std::cout<<"GPU perf./CPU perf. = "<<time/cuda_time<<std::endl;
 
-   time_t timer;
-   struct tm *timeinfo = localtime(&timer);
+   struct tm *timeinfo = localtime(time(NULL));
    char name[50];
    strftime(name, sizeof(name),"%Y%m%d%H%M%S", timeinfo);   
    std::string filename = std::string(name)+std::string(".log");
