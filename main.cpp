@@ -27,6 +27,7 @@ int main()
    for (int i=0; i<pso.iters; i++){
        std::cout<<pso.RME[i]<<"\t";
    }
+   std::cout<<std::endl;
    std::cout<<"GPU RME:"<<std::endl;
    for (int i=0; i<cuda_pso.iters; i++){
        std::cout<<cuda_pso.RME[i]<<"\t";
