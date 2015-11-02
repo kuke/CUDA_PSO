@@ -21,7 +21,7 @@ int main()
    
    std::cout<<"GPU perf./CPU perf. = "<<time/cuda_time<<std::endl;
    
-   std::cout<<string(system("time"))<<std::endl;
+   std::cout<<std::string(system("time"))<<std::endl;
    std::cout<<"CPU RME:"<<std::endl;
    for (int i=0; i<pso.iters; i++){
        std::cout<<pso.RME[i]<<"\t"<<std::endl;
