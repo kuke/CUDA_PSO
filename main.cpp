@@ -1,5 +1,5 @@
 #include <iostream>
-#include <ifstream>
+#include <fstream>
 #include "pso.hpp"
 #include "cuda_pso.cuh"
 #include <string>
